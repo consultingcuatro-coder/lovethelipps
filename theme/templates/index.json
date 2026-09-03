@@ -3,11 +3,10 @@
     "hero": { "type": "wl-hero", "settings": { "cta_link": "#shop", "cta2_link": "/pages/story" } },
     "usp": { "type": "wl-usp", "settings": { "link1": "#ingredients", "link2": "/pages/story", "link3": "#ingredients", "link4": "#fund" } },
     "shelf": { "type": "wl-shelf", "settings": { "collection": "the-shelf" } },
-    "ingredients": { "type": "wl-ingredients", "settings": {} },
-    "meet": { "type": "wl-meet", "settings": { "story_link": "/pages/story" } },
+    "meet": { "type": "wl-meet", "settings": { "story_link": "/pages/story", "padding-block-start": 28 } },
     "fund": { "type": "wl-fund", "settings": {} },
     "reviews": { "type": "wl-reviews", "settings": {} },
     "email": { "type": "wl-email", "settings": {} }
   },
-  "order": ["hero", "usp", "shelf", "ingredients", "meet", "fund", "reviews", "email"]
+  "order": ["hero", "usp", "shelf", "meet", "fund", "reviews", "email"]
 }

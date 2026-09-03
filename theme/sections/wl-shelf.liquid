@@ -11,6 +11,7 @@
     <p class="wl-eyebrow">{{ section.settings.eyebrow }}</p>
     <h2 class="wl-h2">{{ section.settings.heading }} <span class="wl-k">{{ section.settings.heading_accent }}</span></h2>
     {%- if section.settings.intro != blank -%}<p class="wl-shelf__intro">{{ section.settings.intro }}</p>{%- endif -%}
+    <div class="wl-shelf__row{% if section.settings.show_aside %} wl-shelf__row--aside{% endif %}">
     <div class="wl-shelf__grid">
       {%- for product in col.products limit: 6 -%}
         {%- assign variant = product.selected_or_first_available_variant -%}
@@ -44,13 +45,32 @@
         </article>
       {%- endfor -%}
     </div>
+    {%- if section.settings.show_aside -%}
+    <aside class="wl-shelf__aside" id="ingredients">
+      <p class="wl-eyebrow">{{ section.settings.aside_eyebrow }}</p>
+      <h2 class="wl-h2 wl-shelf__aside-h2">{{ section.settings.aside_heading }} <span class="wl-k">{{ section.settings.aside_heading_accent }}</span></h2>
+      <p class="wl-shelf__aside-p">{{ section.settings.aside_copy }}</p>
+      {%- assign achips = section.settings.aside_chips | split: '|' -%}
+      <div class="wl-shelf__aside-chips">{%- for chip in achips -%}<span>{{ chip | strip }}</span>{%- endfor -%}</div>
+    </aside>
+    {%- endif -%}
+    </div>
   </div>
 </div>
 
 {% stylesheet %}
   .wl-shelf { scroll-margin-top: 24px; }
   .wl-shelf__intro { max-width: 58ch; margin: 4px 0 6px; }
-  .wl-shelf__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 420px)); justify-content: center; gap: 22px; margin-top: 28px; }
+  .wl-shelf__row { margin-top: 28px; }
+  .wl-shelf__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 420px)); justify-content: center; gap: 22px; }
+  .wl-shelf__row--aside { display: grid; grid-template-columns: minmax(280px, 420px) 1fr; gap: 22px; align-items: stretch; }
+  .wl-shelf__row--aside .wl-shelf__grid { grid-template-columns: 1fr; justify-content: start; }
+  .wl-shelf__aside { background: var(--wl-water); border: 2px solid var(--wl-ink); border-radius: 22px; padding: clamp(26px, 3.5vw, 44px); display: flex; flex-direction: column; justify-content: center; scroll-margin-top: 24px; }
+  .wl-shelf__aside-h2 { font-size: clamp(28px, 3.4vw, 40px); }
+  .wl-shelf__aside-p { max-width: 56ch; margin: 8px 0 0; font-size: 17.5px; }
+  .wl-shelf__aside-chips { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+  .wl-shelf__aside-chips span { background: var(--wl-paper); border: 1.5px solid rgba(36,27,24,.3); border-radius: 999px; padding: 9px 20px; font-size: 15px; font-weight: 700; }
+  @media (max-width: 900px) { .wl-shelf__row--aside { grid-template-columns: 1fr; } .wl-shelf__row--aside .wl-shelf__grid { justify-content: center; } }
   .wl-card { background: var(--wl-paper); border: 2px solid var(--wl-ink); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; }
   .wl-card__ph { display: flex; justify-content: center; padding: 26px; background: var(--wl-blush); }
   .wl-card__ph img { width: auto; height: 340px; max-width: 100%; display: block; }
@@ -78,6 +98,13 @@
     { "type": "text", "id": "heading_accent", "label": "Heading accent (kiss red)", "default": "covered." },
     { "type": "textarea", "id": "intro", "label": "Intro line", "default": "For the daily kiss and the unhurried moment — because attraction and devotion belong to the same people." },
     { "type": "text", "id": "button_label", "label": "Add button label", "default": "Add to cart" },
+    { "type": "header", "content": "Right-hand card (ingredient honesty)" },
+    { "type": "checkbox", "id": "show_aside", "label": "Show the ingredient card beside the product", "default": true },
+    { "type": "text", "id": "aside_eyebrow", "label": "Eyebrow", "default": "Ingredient honesty" },
+    { "type": "text", "id": "aside_heading", "label": "Heading", "default": "Safe enough to eat." },
+    { "type": "text", "id": "aside_heading_accent", "label": "Heading accent", "default": "Good enough to kiss." },
+    { "type": "textarea", "id": "aside_copy", "label": "Paragraph", "default": "Every ingredient, on every tube, in plain type — because you technically eat your lip gloss, and because “clean” should be a list you can read, not a badge we bought. If we wouldn’t put it in our kitchen, it doesn’t go on your lips." },
+    { "type": "text", "id": "aside_chips", "label": "Chips (separate with |)", "default": "Candelilla wax | Cold-pressed coconut oil | Shea butter | Organic rose extract | Zero parabens · zero PEGs · zero mystery" },
     { "type": "range", "id": "padding-block-start", "label": "Top padding", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 40 },
     { "type": "range", "id": "padding-block-end", "label": "Bottom padding", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 }
   ],
