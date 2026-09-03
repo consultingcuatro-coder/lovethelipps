@@ -14,16 +14,6 @@
         </ul>
       </div>
       <div>
-        <h2 class="wl-footer__h">The house</h2>
-        <ul>
-          {%- for link in section.settings.house_menu.links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}
-          {%- if section.settings.house_menu.links.size == 0 -%}
-            <li><a href="/pages/story">Our Story</a></li>
-            <li><a href="{{ routes.root_url }}#fund">The Restoration Fund</a></li>
-          {%- endif -%}
-        </ul>
-      </div>
-      <div>
         <h2 class="wl-footer__h">Help</h2>
         <ul>
           {%- for policy in shop.policies -%}{%- if policy != blank -%}<li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>{%- endif -%}{%- endfor -%}
@@ -54,7 +44,7 @@
 {% stylesheet %}
   .wl-footer { background: var(--wl-black); color: #d9cfc2; padding: 56px clamp(20px, 4vw, 52px) 28px; font-size: 18px; line-height: 1.5; }
   .wl-footer ul { list-style: none; margin: 0; padding: 0; }
-  .wl-footer__cols { display: grid; grid-template-columns: repeat(4, minmax(150px, 1fr)); gap: 40px 48px; }
+  .wl-footer__cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 40px 48px; }
   .wl-footer__h { font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 22px; line-height: 1.2; color: var(--wl-gold); margin: 0 0 10px; }
   .wl-footer__cols li + li { margin-top: 8px; }
   .wl-footer a { color: #d9cfc2; text-decoration: none; text-decoration-color: transparent; }
@@ -74,7 +64,6 @@
   "name": "wetlipps footer",
   "settings": [
     { "type": "collection", "id": "shelf_collection", "label": "Products to list (collection)" },
-    { "type": "link_list", "id": "house_menu", "label": "“The house” menu (defaults to Our Story + Fund)" },
     { "type": "text", "id": "follow_heading", "label": "Follow heading", "default": "Follow us" },
     { "type": "url", "id": "instagram_url", "label": "Instagram URL" },
     { "type": "url", "id": "facebook_url", "label": "Facebook URL" },
