@@ -51,7 +51,7 @@
     '<div class="wl-items"></div>' +
     '<div class="wl-foot"><div class="wl-sub"><span>Subtotal</span><span class="wl-total">$0</span></div>' +
     '<button class="wl-go" disabled>Checkout opens at launch</button>' +
-    '<p class="wl-note">Preview store — nothing is charged. Ships within 1–2 business days via USPS Ground Advantage.</p></div>';
+    '<p class="wl-note">Preview store — nothing is charged. <a href="shipping.html" style="color:var(--kiss,#7A2530);font-weight:700">Shipping</a> · <a href="refunds.html" style="color:var(--kiss,#7A2530);font-weight:700">Refunds</a></p></div>';
   var toast = document.createElement('div'); toast.className = 'wl-toast';
   document.body.appendChild(scrim); document.body.appendChild(drawer); document.body.appendChild(toast);
 
