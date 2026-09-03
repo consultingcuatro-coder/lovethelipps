@@ -24,6 +24,8 @@
   .cta{display:inline-block;background:var(--kiss);color:var(--cream);padding:15px 34px;border-radius:999px;font-weight:700;font-size:17px;text-decoration:none;border:none;cursor:pointer}
   footer{background:var(--black);color:#d9cfc2;margin-top:36px;padding:38px 0;text-align:center}
   footer p{font-size:14px;color:#8d8478}
+  footer .legal{margin-bottom:8px}
+  footer .legal a{color:#b9ae9f;text-decoration:none}
   .crumb{font-size:14.5px;color:#8a6f5f;padding:6px 0 22px}
   .crumb a{color:#8a6f5f}
   .pdp{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,70px);align-items:start}
@@ -87,7 +89,7 @@
     </div>
     <div class="qtyrow">
       <div class="qty"><button>−</button><i>1</i><button>+</button></div>
-      <button class="cta">Add to cart — $16</button>
+      <button class="cta" data-add="gloss">Add to cart — $16</button>
     </div>
     <div class="benefits">
       <div>💧 <span>Wet shine that doesn&rsquo;t stick to hair or husbands (unless you want it to)</span></div>
@@ -113,6 +115,7 @@
   </div>
 </section>
 </div>
-<footer><p>© 2026 wetlipps · Santa Barbara · Life&rsquo;s better wet. Make restoration possible.</p></footer>
+<footer><p class="legal"><a href="shipping.html">Shipping</a> &middot; <a href="refunds.html">Refunds</a></p><p>© 2026 wetlipps · Santa Barbara · Life&rsquo;s better wet. Make restoration possible.</p></footer>
+<script src="cart.js"></script>
 </body>
 </html>
