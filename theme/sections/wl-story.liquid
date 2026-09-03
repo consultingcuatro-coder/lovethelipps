@@ -9,7 +9,8 @@
       <h1 class="wl-h1 wl-story__h1">{{ section.settings.h1 }} <span class="wl-story__h1b">{{ section.settings.h1b }}</span></h1>
       <p class="wl-story__sub">{{ section.settings.sub }}</p>
       {%- if section.settings.hero_image != blank -%}
-        {{ section.settings.hero_image | image_url: width: 1720 | image_tag: widths: '860, 1720', sizes: '(min-width: 900px) 860px, 100vw', alt: section.settings.hero_image.alt | default: 'The six of us at the beach, golden hour', class: 'wl-story__photo' }}
+        {%- assign fam_alt = section.settings.hero_image.alt | default: 'The six of us at the beach, golden hour' -%}
+        {{ section.settings.hero_image | image_url: width: 1720 | image_tag: widths: '860, 1720', sizes: '(min-width: 900px) 860px, 100vw', alt: fam_alt, class: 'wl-story__photo' }}
       {%- else -%}
         <img class="wl-story__photo" src="{{ 'wl-family.jpg' | asset_url }}" alt="The six of us at the beach, golden hour" width="1600" height="900">
       {%- endif -%}
@@ -29,7 +30,8 @@
       <div class="wl-band wl-story__band">
         <div class="wl-band__img">
           {%- if section.settings.believe_image != blank -%}
-            {{ section.settings.believe_image | image_url: width: 1000 | image_tag: widths: '500, 1000', sizes: '(min-width: 861px) 40vw, 100vw', alt: section.settings.believe_image.alt | default: 'A kiss on the cheek at golden hour', loading: 'lazy' }}
+            {%- assign bel_alt = section.settings.believe_image.alt | default: 'A kiss on the cheek at golden hour' -%}
+            {{ section.settings.believe_image | image_url: width: 1000 | image_tag: widths: '500, 1000', sizes: '(min-width: 861px) 40vw, 100vw', alt: bel_alt, loading: 'lazy' }}
           {%- else -%}
             <img src="{{ 'wl-believe.jpg' | asset_url }}" alt="A kiss on the cheek at golden hour" loading="lazy">
           {%- endif -%}

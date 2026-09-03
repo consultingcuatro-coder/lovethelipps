@@ -19,13 +19,15 @@
       <div class="wl-gallery">
         <div class="wl-gallery__main">
           {%- if product.featured_image -%}
-            {{ product.featured_image | image_url: width: 1200 | image_tag: widths: '600, 1200', sizes: '(min-width: 861px) 50vw, 100vw', alt: product.featured_image.alt | default: product.title, fetchpriority: 'high' }}
+            {%- assign main_alt = product.featured_image.alt | default: product.title -%}
+            {{ product.featured_image | image_url: width: 1200 | image_tag: widths: '600, 1200', sizes: '(min-width: 861px) 50vw, 100vw', alt: main_alt, fetchpriority: 'high' }}
           {%- endif -%}
         </div>
         {%- if product.images.size > 1 -%}
           <div class="wl-gallery__thumbs">
             {%- for image in product.images -%}
-              <a href="{{ image | image_url: width: 1600 }}"{% if forloop.first %} class="on"{% endif %}>{{ image | image_url: width: 200 | image_tag: alt: image.alt | default: product.title, loading: 'lazy' }}</a>
+              {%- assign th_alt = image.alt | default: product.title -%}
+              <a href="{{ image | image_url: width: 1600 }}"{% if forloop.first %} class="on"{% endif %}>{{ image | image_url: width: 200 | image_tag: alt: th_alt, loading: 'lazy' }}</a>
             {%- endfor -%}
           </div>
         {%- endif -%}
@@ -48,11 +50,13 @@
             <div class="wl-qtyrow" ref="productFormButtons">
               <span class="product-form-text__error hidden" ref="addToCartTextError"><span class="svg-wrapper">{{- 'icon-error.svg' | inline_asset_content -}}</span></span>
               {% render 'quantity-selector', product: product %}
-              {%- assign add_text = section.settings.button_label | append: ' — ' | append: variant.price | money -%}
+              {%- assign price_txt = variant.price | money -%}
+              {%- assign add_text = section.settings.button_label | append: ' — ' | append: price_txt -%}
               {%- if variant.available -%}
                 {% render 'add-to-cart-button', class: 'wl-cta', can_add_to_cart: true, show_icon: false, product: product, add_to_cart_text: add_text %}
               {%- else -%}
-                {% render 'add-to-cart-button', class: 'wl-cta', can_add_to_cart: false, show_icon: false, product: product, add_to_cart_text: 'products.product.sold_out' | t %}
+                {%- assign sold_out_text = 'products.product.sold_out' | t -%}
+                {% render 'add-to-cart-button', class: 'wl-cta', can_add_to_cart: false, show_icon: false, product: product, add_to_cart_text: sold_out_text %}
               {%- endif -%}
             </div>
           {%- endform -%}

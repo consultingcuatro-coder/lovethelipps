@@ -17,7 +17,8 @@
         <article class="wl-card">
           <a class="wl-card__ph" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
             {%- if product.featured_image -%}
-              {{ product.featured_image | image_url: width: 840 | image_tag: widths: '420, 840', sizes: '(min-width: 700px) 380px, 90vw', alt: product.featured_image.alt | default: product.title, loading: 'lazy' }}
+              {%- assign img_alt = product.featured_image.alt | default: product.title -%}
+              {{ product.featured_image | image_url: width: 840 | image_tag: widths: '420, 840', sizes: '(min-width: 700px) 380px, 90vw', alt: img_alt, loading: 'lazy' }}
             {%- endif -%}
           </a>
           <div class="wl-card__in">
@@ -34,7 +35,7 @@
                   {%- if variant.available -%}
                     {% render 'add-to-cart-button', class: 'wl-add', can_add_to_cart: true, show_icon: false, product: product, add_to_cart_text: section.settings.button_label %}
                   {%- else -%}
-                    {% render 'add-to-cart-button', class: 'wl-add', can_add_to_cart: false, show_icon: false, product: product, add_to_cart_text: 'products.product.sold_out' | t %}
+                    {%- assign sold_out_text = 'products.product.sold_out' | t -%}{% render 'add-to-cart-button', class: 'wl-add', can_add_to_cart: false, show_icon: false, product: product, add_to_cart_text: sold_out_text %}
                   {%- endif -%}
                 {%- endform -%}
               </product-form-component>

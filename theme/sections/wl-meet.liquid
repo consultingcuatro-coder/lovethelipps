@@ -7,7 +7,8 @@
     <div class="wl-band">
       <div class="wl-band__img">
         {%- if section.settings.image != blank -%}
-          {{ section.settings.image | image_url: width: 1000 | image_tag: widths: '500, 1000', sizes: '(min-width: 861px) 40vw, 100vw', alt: section.settings.image.alt | default: 'The two of us, golden hour', loading: 'lazy' }}
+          {%- assign meet_alt = section.settings.image.alt | default: 'The two of us, golden hour' -%}
+          {{ section.settings.image | image_url: width: 1000 | image_tag: widths: '500, 1000', sizes: '(min-width: 861px) 40vw, 100vw', alt: meet_alt, loading: 'lazy' }}
         {%- else -%}
           <img src="{{ 'wl-couple.jpg' | asset_url }}" alt="The two of us, golden hour" width="900" height="1125" loading="lazy">
         {%- endif -%}
