@@ -3,7 +3,7 @@
 {%- enddoc -%}
 <div class="section-background"></div>
 <div class="section section--page-width spacing-style wl-hero-section" style="{% render 'spacing-style', settings: section.settings %}">
-  <div class="wl-wrap wl-hero">
+  <div class="wl-wrap wl-hero" style="--wl-hero-shift: {{ section.settings.art_shift | default: 0 }}px">
     <div class="wl-hero__art">
       {%- if section.settings.image != blank -%}
         {%- assign hero_alt = section.settings.image.alt | default: 'Dewy pink lips with a clear drop of water falling — the wetlipps mark' -%}
@@ -33,7 +33,7 @@
   .wl-hero__sub { margin: 8px 0 0; font-size: 15px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase; color: var(--wl-goldlight); }
   .wl-hero__p { margin: 16px 0 0; font-size: 19px; max-width: 46ch; }
   .wl-hero__ctas { margin: 24px 0 0; }
-  @media (min-width: 861px) { .wl-hero__art img { transform: translateY(-24px); } }
+  @media (min-width: 861px) { .wl-hero__art img { transform: translateY(var(--wl-hero-shift, 0px)); } }
   @media (max-width: 860px) { .wl-hero { grid-template-columns: 1fr; } }
 {% endstylesheet %}
 
@@ -42,6 +42,7 @@
   "name": "wetlipps · Hero",
   "settings": [
     { "type": "image_picker", "id": "image", "label": "Hero artwork (optional — defaults to the lips mark)" },
+    { "type": "range", "id": "art_shift", "label": "Artwork vertical nudge (desktop)", "min": -80, "max": 120, "step": 4, "unit": "px", "default": 40 },
     { "type": "text", "id": "heading", "label": "Headline", "default": "Life’s better wet." },
     { "type": "text", "id": "sub", "label": "Lockup line", "default": "Make restoration possible." },
     { "type": "textarea", "id": "copy", "label": "Paragraph", "default": "Organic lip care from a family that knows chapped: Santa Barbara sun, beach days, trail days — and a long hunt for a balm that actually works. We found it, and put our name on it. Dewy, kissable, honest to the last ingredient." },
