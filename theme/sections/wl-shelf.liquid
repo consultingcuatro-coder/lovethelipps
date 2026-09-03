@@ -25,7 +25,7 @@
             <h3 class="wl-h3"><a href="{{ product.url }}">{{ product.title }}</a></h3>
             <p class="wl-card__blurb">{{ product.description | strip_html | split: "." | first | append: "." | truncatewords: 16 }}</p>
             <div class="wl-card__row">
-              <span class="wl-card__price">{{ product.price | money }}</span>
+              <span class="wl-card__price">{%- if product.compare_at_price > product.price -%}<s class="wl-was">{{ product.compare_at_price | money }}</s> {%- endif -%}{{ product.price | money }}</span>
               <product-form-component data-section-id="{{ section.id }}" data-product-id="{{ product.id }}" data-product-url="{{ product.url }}" on:submit="/handleSubmit" data-quantity-default="1" data-quantity-error-max="{{ 'products.product.quantity_error_max' | t }}">
                 <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
                 {%- assign form_id = 'WlShelf-' | append: section.id | append: '-' | append: product.id -%}
@@ -60,6 +60,7 @@
   .wl-card__blurb { font-size: 15.5px; margin: 4px 0 0; color: var(--wl-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: calc(2 * 1.5em); }
   .wl-card__row { margin-top: auto; padding-top: 14px; display: flex; align-items: center; gap: 12px; }
   .wl-card__price { font-weight: 800; font-size: 17px; }
+  .wl-was { font-weight: 600; color: var(--wl-muted); margin-right: 6px; }
   .wl-card__row product-form-component { margin-left: auto; }
   .wl-card__row form { margin: 0; }
   .wl-card__row .product-form-text__error { display: block; font-size: 13px; color: var(--wl-kiss); }

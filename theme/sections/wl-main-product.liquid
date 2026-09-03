@@ -6,7 +6,9 @@
 {%- assign variant = product.selected_or_first_available_variant -%}
 {%- assign paras = product.description | split: '</p>' -%}
 {%- assign pitch = paras[0] | strip_html | strip -%}
-{%- assign ingredients = paras[1] | strip_html | remove: 'Ingredients (all of them):' | remove: 'Ingredients:' | strip -%}
+{%- assign para2 = paras[1] | strip_html | strip -%}
+{%- if para2 contains 'What’s inside' -%}{%- assign label2 = 'What’s inside' -%}{%- else -%}{%- assign label2 = 'Ingredients (all of them)' -%}{%- endif -%}
+{%- assign ingredients = para2 | remove: 'Ingredients (all of them):' | remove: 'Ingredients:' | remove: 'What’s inside:' | strip -%}
 {%- assign howto = paras[2] | strip_html | remove: 'How to wear it:' | strip -%}
 <script type="application/ld+json">{{ product | structured_data }}</script>
 {% render 'add-to-cart-button-styles' %}
@@ -36,7 +38,7 @@
       <div class="wl-buy">
         <h1 class="wl-h1 wl-buy__h1">{{ product.title }}</h1>
         {%- if section.settings.badge != blank -%}<span class="wl-buy__new">{{ section.settings.badge }}</span>{%- endif -%}
-        <p class="wl-buy__price">{{ variant.price | money }}</p>
+        <p class="wl-buy__price">{%- if variant.compare_at_price > variant.price -%}<s class="wl-was">{{ variant.compare_at_price | money }}</s> {%- endif -%}{{ variant.price | money }}{%- if variant.compare_at_price > variant.price -%} <span class="wl-save">Save 10%</span>{%- endif -%}</p>
         {%- if pitch != blank -%}<p class="wl-buy__pitch">{{ pitch }}</p>{%- endif -%}
         {%- unless product.has_only_default_variant -%}
           <p class="wl-buy__shade"><b>{{ product.options[0] }} &middot; {{ variant.title }}</b></p>
@@ -70,7 +72,7 @@
           <div class="wl-microtrust"><b>{{ section.settings.microtrust_lead }}</b> {{ section.settings.microtrust }}</div>
         {%- endif -%}
         <div class="wl-acc">
-          {%- if ingredients != blank -%}<details open><summary>Ingredients (all of them)</summary><p>{{ ingredients }}</p></details>{%- endif -%}
+          {%- if ingredients != blank -%}<details open><summary>{{ label2 }}</summary><p>{{ ingredients }}</p></details>{%- endif -%}
           {%- if howto != blank -%}<details><summary>How to wear it</summary><p>{{ howto }}</p></details>{%- endif -%}
           <details><summary>Shipping &amp; refunds</summary><p>{{ section.settings.shipping_copy }} {% for policy in shop.policies %}{% if policy != blank %}<a href="{{ policy.url }}">{{ policy.title | escape }}</a>{% unless forloop.last %} &middot; {% endunless %}{% endif %}{% endfor %}</p></details>
         </div>
@@ -122,6 +124,8 @@
   .wl-buy__h1 { font-size: clamp(34px, 4.6vw, 54px); color: var(--wl-kiss); }
   .wl-buy__new { display: inline-block; margin-top: 8px; background: var(--wl-water); border: 1.5px solid rgba(36,27,24,.3); border-radius: 999px; padding: 6px 16px; font-size: 14px; font-weight: 700; }
   .wl-buy__price { font-size: 26px; font-weight: 800; margin: 14px 0 0; }
+  .wl-was { font-weight: 600; color: var(--wl-muted); margin-right: 8px; font-size: 20px; }
+  .wl-save { display: inline-block; vertical-align: middle; margin-left: 8px; background: var(--wl-rose); color: #fff; font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
   .wl-buy__pitch { margin: 12px 0 0; font-size: 18px; max-width: 48ch; }
   .wl-buy__shade { margin: 18px 0 0; font-size: 16px; }
   .wl-qtyrow { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-top: 24px; }
