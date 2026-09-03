@@ -47,7 +47,12 @@
   .fundband .how b{display:block;font-family:'Young Serif',serif;font-size:17px;margin-bottom:4px}
   .close{text-align:center}
   .close .sig{font-family:'Young Serif',serif;font-size:clamp(22px,3vw,30px);color:var(--kiss)}
-  footer{background:var(--black);color:#d9cfc2;margin-top:36px;padding:38px 0;text-align:center}
+  footer{background:var(--black);color:#d9cfc2;margin-top:36px;padding:44px 0}
+  footer .cols{display:flex;gap:48px;flex-wrap:wrap;text-align:left}
+  footer b{color:#C9A24B;font-family:'Young Serif',serif;font-weight:400;font-size:19px;display:block;margin-bottom:8px}
+  footer a{color:#d9cfc2;text-decoration:none;display:block;font-size:15px;margin-top:6px}
+  footer .fine{margin-top:30px;font-size:13.5px;color:#8d8478;max-width:none}
+
   footer p{font-size:14px;color:#8d8478;max-width:none}
   @media (max-width:860px){.band,.abt{grid-template-columns:1fr}}
 </style>
@@ -110,6 +115,13 @@
   <a class="cta" href="index.html#shop" style="margin-top:26px">Shop the shelf</a>
 </section>
 </div>
-<footer><p>© 2026 wetlipps · Santa Barbara · Life&rsquo;s better wet. Make restoration possible.</p></footer>
+<footer><div class="wrap">
+  <div class="cols">
+    <div><b>wetlipps</b><a href="balm.html">The Balm Stick</a><a href="product.html">The Gloss Wand</a></div>
+    <div><b>sliplipps</b><a href="sliplipps.html">Shop sliplipps</a></div>
+    <div><b>The house</b><a href="story.html">Our Story</a><a href="index.html#fund">The Restoration Fund</a></div>
+  </div>
+  <p class="fine">© 2026 wetlipps · Santa Barbara, California · Life&rsquo;s better wet. Make restoration possible.</p>
+</div></footer>
 </body>
 </html>
