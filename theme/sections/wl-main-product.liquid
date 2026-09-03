@@ -1,0 +1,169 @@
+{%- doc -%}
+  wetlipps product page. Uses Horizon's product-form-component / quantity-selector /
+  add-to-cart-button so add-to-cart, the drawer and the header count work natively.
+  Product descriptions are authored as three paragraphs: pitch · ingredients · how to wear it.
+{%- enddoc -%}
+{%- assign variant = product.selected_or_first_available_variant -%}
+{%- assign paras = product.description | split: '</p>' -%}
+{%- assign pitch = paras[0] | strip_html | strip -%}
+{%- assign ingredients = paras[1] | strip_html | remove: 'Ingredients (all of them):' | remove: 'Ingredients:' | strip -%}
+{%- assign howto = paras[2] | strip_html | remove: 'How to wear it:' | strip -%}
+<script type="application/ld+json">{{ product | structured_data }}</script>
+{% render 'add-to-cart-button-styles' %}
+{% render 'fly-to-cart-styles' %}
+<div class="section-background"></div>
+<div class="section section--page-width spacing-style wl-pdp-section" style="{% render 'spacing-style', settings: section.settings %}">
+  <div class="wl-wrap wl-pdp">
+    <p class="wl-crumb"><a href="{{ routes.root_url }}#shop">Shop</a> / {{ product.title }}</p>
+    <div class="wl-pdp__grid">
+      <div class="wl-gallery">
+        <div class="wl-gallery__main">
+          {%- if product.featured_image -%}
+            {{ product.featured_image | image_url: width: 1200 | image_tag: widths: '600, 1200', sizes: '(min-width: 861px) 50vw, 100vw', alt: product.featured_image.alt | default: product.title, fetchpriority: 'high' }}
+          {%- endif -%}
+        </div>
+        {%- if product.images.size > 1 -%}
+          <div class="wl-gallery__thumbs">
+            {%- for image in product.images -%}
+              <a href="{{ image | image_url: width: 1600 }}"{% if forloop.first %} class="on"{% endif %}>{{ image | image_url: width: 200 | image_tag: alt: image.alt | default: product.title, loading: 'lazy' }}</a>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="wl-buy">
+        <h1 class="wl-h1 wl-buy__h1">{{ product.title }}</h1>
+        {%- if section.settings.badge != blank -%}<span class="wl-buy__new">{{ section.settings.badge }}</span>{%- endif -%}
+        <p class="wl-buy__price">{{ variant.price | money }}</p>
+        {%- if pitch != blank -%}<p class="wl-buy__pitch">{{ pitch }}</p>{%- endif -%}
+        {%- unless product.has_only_default_variant -%}
+          <p class="wl-buy__shade"><b>{{ product.options[0] }} &middot; {{ variant.title }}</b></p>
+        {%- endunless -%}
+
+        <product-form-component data-section-id="{{ section.id }}" data-product-id="{{ product.id }}" data-product-url="{{ product.url }}" on:submit="/handleSubmit" data-quantity-default="1" data-quantity-error-max="{{ 'products.product.quantity_error_max' | t }}">
+          <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
+          {%- assign form_id = 'WlPdp-' | append: section.id -%}
+          {%- form 'product', product, id: form_id, data-type: 'add-to-cart-form' -%}
+            <input type="hidden" name="id" ref="variantId" value="{{ variant.id }}">
+            <div class="wl-qtyrow" ref="productFormButtons">
+              <span class="product-form-text__error hidden" ref="addToCartTextError"><span class="svg-wrapper">{{- 'icon-error.svg' | inline_asset_content -}}</span></span>
+              {% render 'quantity-selector', product: product %}
+              {%- assign add_text = section.settings.button_label | append: ' — ' | append: variant.price | money -%}
+              {%- if variant.available -%}
+                {% render 'add-to-cart-button', class: 'wl-cta', can_add_to_cart: true, show_icon: false, product: product, add_to_cart_text: add_text %}
+              {%- else -%}
+                {% render 'add-to-cart-button', class: 'wl-cta', can_add_to_cart: false, show_icon: false, product: product, add_to_cart_text: 'products.product.sold_out' | t %}
+              {%- endif -%}
+            </div>
+          {%- endform -%}
+        </product-form-component>
+
+        {%- assign benefits = section.settings.benefits | split: '|' -%}
+        <div class="wl-benefits">
+          {%- for b in benefits -%}<div>{{ b | strip }}</div>{%- endfor -%}
+        </div>
+        {%- if section.settings.microtrust != blank -%}
+          <div class="wl-microtrust"><b>{{ section.settings.microtrust_lead }}</b> {{ section.settings.microtrust }}</div>
+        {%- endif -%}
+        <div class="wl-acc">
+          {%- if ingredients != blank -%}<details open><summary>Ingredients (all of them)</summary><p>{{ ingredients }}</p></details>{%- endif -%}
+          {%- if howto != blank -%}<details><summary>How to wear it</summary><p>{{ howto }}</p></details>{%- endif -%}
+          <details><summary>Shipping &amp; refunds</summary><p>{{ section.settings.shipping_copy }} {% for policy in shop.policies %}{% if policy != blank %}<a href="{{ policy.url }}">{{ policy.title | escape }}</a>{% unless forloop.last %} &middot; {% endunless %}{% endif %}{% endfor %}</p></details>
+        </div>
+      </div>
+    </div>
+
+    {%- assign col = collections[section.settings.pairs_collection] | default: collections['the-shelf'] -%}
+    {%- assign others = col.products | where: 'available', true -%}
+    {%- assign shown = 0 -%}
+    {%- for other in others -%}{%- if other.id != product.id -%}{%- assign shown = shown | plus: 1 -%}{%- endif -%}{%- endfor -%}
+    {%- if shown > 0 -%}
+    <section class="wl-pairs">
+      <p class="wl-eyebrow">Pairs well with</p>
+      <h2 class="wl-h2">Finish the <span class="wl-k">set.</span></h2>
+      <div class="wl-pairs__grid">
+        {%- for other in others limit: 4 -%}
+          {%- if other.id == product.id -%}{%- continue -%}{%- endif -%}
+          {%- assign ov = other.selected_or_first_available_variant -%}
+          <div class="wl-pcard">
+            <a href="{{ other.url }}">{%- if other.featured_image -%}{{ other.featured_image | image_url: width: 200 | image_tag: alt: other.title, loading: 'lazy' }}{%- endif -%}</a>
+            <div><b><a href="{{ other.url }}">{{ other.title }}</a></b><span>{{ other.price | money }}</span></div>
+            <product-form-component data-section-id="{{ section.id }}" data-product-id="{{ other.id }}" data-product-url="{{ other.url }}" on:submit="/handleSubmit" data-quantity-default="1" data-quantity-error-max="{{ 'products.product.quantity_error_max' | t }}">
+              <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
+              {%- assign pf_id = 'WlPair-' | append: section.id | append: '-' | append: other.id -%}
+              {%- form 'product', other, id: pf_id, novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                <input type="hidden" name="id" ref="variantId" value="{{ ov.id }}">
+                <input type="hidden" name="quantity" value="1">
+                {% render 'add-to-cart-button', class: 'wl-add', can_add_to_cart: true, show_icon: false, product: other, add_to_cart_text: 'Add' %}
+              {%- endform -%}
+            </product-form-component>
+          </div>
+        {%- endfor -%}
+      </div>
+    </section>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .wl-crumb { font-size: 14.5px; color: #8a6f5f; padding: 6px 0 22px; margin: 0; }
+  .wl-crumb a { color: #8a6f5f; }
+  .wl-pdp__grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(28px, 5vw, 64px); align-items: start; }
+  .wl-gallery__main { background: var(--wl-blush); border: 2px solid var(--wl-ink); border-radius: 22px; padding: clamp(20px, 3vw, 40px); display: flex; justify-content: center; }
+  .wl-gallery__main img { width: auto; max-width: 100%; max-height: 560px; height: auto; display: block; }
+  .wl-gallery__thumbs { display: flex; gap: 12px; margin-top: 12px; }
+  .wl-gallery__thumbs a { display: block; width: 84px; border: 2px solid transparent; border-radius: 12px; overflow: hidden; background: var(--wl-blush); }
+  .wl-gallery__thumbs a.on { border-color: var(--wl-ink); }
+  .wl-gallery__thumbs img { width: 100%; height: auto; display: block; }
+  .wl-buy__h1 { font-size: clamp(34px, 4.6vw, 54px); color: var(--wl-kiss); }
+  .wl-buy__new { display: inline-block; margin-top: 8px; background: var(--wl-water); border: 1.5px solid rgba(36,27,24,.3); border-radius: 999px; padding: 6px 16px; font-size: 14px; font-weight: 700; }
+  .wl-buy__price { font-size: 26px; font-weight: 800; margin: 14px 0 0; }
+  .wl-buy__pitch { margin: 12px 0 0; font-size: 18px; max-width: 48ch; }
+  .wl-buy__shade { margin: 18px 0 0; font-size: 16px; }
+  .wl-qtyrow { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-top: 24px; }
+  .wl-qtyrow .quantity-selector-wrapper { flex: 0 0 auto; }
+  .wl-qtyrow .quantity-selector { border: 2px solid var(--wl-ink); border-radius: 999px; background: var(--wl-paper); }
+  .wl-qtyrow .product-form-text__error { flex-basis: 100%; font-size: 14px; color: var(--wl-kiss); }
+  .wl-qtyrow .product-form-text__error.hidden { display: none; }
+  .wl-benefits { margin-top: 24px; display: flex; flex-direction: column; gap: 9px; }
+  .wl-benefits div { font-size: 16px; }
+  .wl-microtrust { margin-top: 22px; background: var(--wl-blush); border-radius: 14px; padding: 14px 18px; font-size: 15px; }
+  .wl-acc { margin-top: 26px; border-top: 1.5px solid rgba(122,37,48,.2); }
+  .wl-acc details { border-bottom: 1.5px solid rgba(122,37,48,.2); padding: 14px 4px; }
+  .wl-acc summary { font-weight: 700; font-size: 16.5px; cursor: pointer; list-style: none; }
+  .wl-acc summary::-webkit-details-marker { display: none; }
+  .wl-acc summary::after { content: '+'; float: right; color: var(--wl-kiss); }
+  .wl-acc details[open] summary::after { content: '–'; }
+  .wl-acc p { font-size: 15.5px; margin: 8px 0 0; color: var(--wl-muted); }
+  .wl-acc p a { color: var(--wl-kiss); font-weight: 700; }
+  .wl-pairs { padding-top: clamp(44px, 5.5vw, 76px); }
+  .wl-pairs__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 380px)); gap: 20px; margin-top: 24px; }
+  .wl-pcard { background: var(--wl-paper); border: 2px solid var(--wl-ink); border-radius: 16px; display: flex; gap: 16px; align-items: center; padding: 16px 18px; }
+  .wl-pcard > a { flex: 0 0 74px; }
+  .wl-pcard img { width: 74px; height: 74px; object-fit: contain; border-radius: 50%; background: var(--wl-blush); display: block; }
+  .wl-pcard > div { flex: 1; }
+  .wl-pcard b { font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 17px; display: block; }
+  .wl-pcard b a { color: inherit; text-decoration: none; text-decoration-color: transparent; }
+  .wl-pcard span { font-weight: 800; font-size: 15px; }
+  .wl-pcard form { margin: 0; }
+  @media (max-width: 860px) { .wl-pdp__grid { grid-template-columns: 1fr; } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "wetlipps · Product page",
+  "settings": [
+    { "type": "text", "id": "badge", "label": "Badge", "default": "✨ New — be one of our first" },
+    { "type": "text", "id": "button_label", "label": "Add button label (price is appended)", "default": "Add to cart" },
+    { "type": "textarea", "id": "benefits", "label": "Benefit lines (separate with |)", "default": "🌿 Organic & vegan — every ingredient on the tube, in plain type | 🥄 Safe enough to eat — you technically do | 💗 10% of profits · The Restoration Fund" },
+    { "type": "text", "id": "microtrust_lead", "label": "Guarantee lead", "default": "The Chapped-Lips Guarantee:" },
+    { "type": "textarea", "id": "microtrust", "label": "Guarantee copy", "default": "if it doesn’t work on your lips, it’s on us — full refund within 30 days, no return needed." },
+    { "type": "textarea", "id": "shipping_copy", "label": "Shipping & refunds accordion", "default": "Ships from Santa Barbara within 1–2 business days by USPS Ground Advantage, tracking included, in plain packaging. Nothing ever comes back to us: if it doesn’t work on your lips, tell us within 30 days for a full refund, no return needed." },
+    { "type": "collection", "id": "pairs_collection", "label": "“Pairs well with” collection" },
+    { "type": "range", "id": "padding-block-start", "label": "Top padding", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 12 },
+    { "type": "range", "id": "padding-block-end", "label": "Bottom padding", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 }
+  ],
+  "disabled_on": { "groups": ["header", "footer"] },
+  "presets": []
+}
+{% endschema %}

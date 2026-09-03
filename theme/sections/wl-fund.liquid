@@ -1,0 +1,37 @@
+{%- doc -%}
+  The Restoration Fund band (kiss red).
+{%- enddoc -%}
+<div class="section-background"></div>
+<div class="section section--page-width spacing-style" style="{% render 'spacing-style', settings: section.settings %}">
+  <div class="wl-wrap">
+    <div class="wl-fund" id="fund">
+      <p class="wl-eyebrow wl-fund__eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="wl-h2 wl-fund__h2">{{ section.settings.heading }}</h2>
+      <p class="wl-fund__p">{{ section.settings.copy }}</p>
+      {%- if section.settings.pill != blank -%}<span class="wl-fund__pill">{{ section.settings.pill }}</span>{%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .wl-fund { background: var(--wl-kiss); color: var(--wl-cream); border-radius: 22px; padding: clamp(30px, 4.5vw, 54px); text-align: center; scroll-margin-top: 24px; }
+  .wl-fund__eyebrow { color: var(--wl-blush); }
+  .wl-fund__h2 { color: var(--wl-cream); font-size: clamp(34px, 4.6vw, 54px); }
+  .wl-fund__p { margin: 10px auto 0; max-width: 62ch; font-size: 20px; line-height: 1.65; color: var(--wl-cream); }
+  .wl-fund__pill { display: inline-block; margin-top: 24px; border: 1.5px solid var(--wl-cream); padding: 12px 28px; font-size: 16px; letter-spacing: .2em; text-transform: uppercase; font-weight: 700; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "wetlipps · Restoration Fund",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The Restoration Fund" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Make restoration possible." },
+    { "type": "textarea", "id": "copy", "label": "Paragraph", "default": "We celebrate healthy love — and we put money behind healing broken love. Ten percent of our profits helps people find restoration. Every tube enables the possibility of restoration: for your lips, and through you, for someone else’s whole life." },
+    { "type": "text", "id": "pill", "label": "Pill", "default": "10% of profits · every order · always" },
+    { "type": "range", "id": "padding-block-start", "label": "Top padding", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding-block-end", "label": "Bottom padding", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 }
+  ],
+  "presets": [{ "name": "wetlipps · Restoration Fund", "category": "wetlipps" }]
+}
+{% endschema %}

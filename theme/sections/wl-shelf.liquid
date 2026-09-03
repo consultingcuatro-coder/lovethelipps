@@ -1,0 +1,84 @@
+{%- doc -%}
+  The shelf: product cards from a collection, each with a native Horizon add-to-cart form
+  (product-form-component) so the cart drawer and header count update the Horizon way.
+{%- enddoc -%}
+{%- assign col = section.settings.collection | default: collections['the-shelf'] -%}
+{% render 'add-to-cart-button-styles' %}
+{% render 'fly-to-cart-styles' %}
+<div class="section-background"></div>
+<div class="section section--page-width spacing-style" style="{% render 'spacing-style', settings: section.settings %}">
+  <div class="wl-wrap wl-shelf" id="shop">
+    <p class="wl-eyebrow">{{ section.settings.eyebrow }}</p>
+    <h2 class="wl-h2">{{ section.settings.heading }} <span class="wl-k">{{ section.settings.heading_accent }}</span></h2>
+    {%- if section.settings.intro != blank -%}<p class="wl-shelf__intro">{{ section.settings.intro }}</p>{%- endif -%}
+    <div class="wl-shelf__grid">
+      {%- for product in col.products limit: 6 -%}
+        {%- assign variant = product.selected_or_first_available_variant -%}
+        <article class="wl-card">
+          <a class="wl-card__ph" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+            {%- if product.featured_image -%}
+              {{ product.featured_image | image_url: width: 840 | image_tag: widths: '420, 840', sizes: '(min-width: 700px) 380px, 90vw', alt: product.featured_image.alt | default: product.title, loading: 'lazy' }}
+            {%- endif -%}
+          </a>
+          <div class="wl-card__in">
+            <h3 class="wl-h3"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+            <p class="wl-card__blurb">{{ product.description | strip_html | truncate: 96 }}</p>
+            <div class="wl-card__row">
+              <span class="wl-card__price">{{ product.price | money }}</span>
+              <product-form-component data-section-id="{{ section.id }}" data-product-id="{{ product.id }}" data-product-url="{{ product.url }}" on:submit="/handleSubmit" data-quantity-default="1" data-quantity-error-max="{{ 'products.product.quantity_error_max' | t }}">
+                <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
+                {%- assign form_id = 'WlShelf-' | append: section.id | append: '-' | append: product.id -%}
+                {%- form 'product', product, id: form_id, novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                  <input type="hidden" name="id" ref="variantId" value="{{ variant.id }}"{% unless variant.available %} disabled{% endunless %}>
+                  <input type="hidden" name="quantity" value="1">
+                  {%- if variant.available -%}
+                    {% render 'add-to-cart-button', class: 'wl-add', can_add_to_cart: true, show_icon: false, product: product, add_to_cart_text: section.settings.button_label %}
+                  {%- else -%}
+                    {% render 'add-to-cart-button', class: 'wl-add', can_add_to_cart: false, show_icon: false, product: product, add_to_cart_text: 'products.product.sold_out' | t %}
+                  {%- endif -%}
+                {%- endform -%}
+              </product-form-component>
+            </div>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .wl-shelf { scroll-margin-top: 24px; }
+  .wl-shelf__intro { max-width: 58ch; margin: 4px 0 6px; }
+  .wl-shelf__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 380px)); justify-content: center; gap: 22px; margin-top: 28px; }
+  .wl-card { background: var(--wl-paper); border: 2px solid var(--wl-ink); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; }
+  .wl-card__ph { display: flex; justify-content: center; padding: 26px; background: var(--wl-blush); }
+  .wl-card__ph img { width: auto; height: 340px; max-width: 100%; display: block; }
+  .wl-card__in { padding: 16px 20px 20px; }
+  .wl-card__in h3 a { color: inherit; text-decoration: none; text-decoration-color: transparent; }
+  .wl-card__in h3 a:hover { text-decoration: underline; text-decoration-color: currentColor; }
+  .wl-card__blurb { font-size: 15.5px; margin: 4px 0 0; color: var(--wl-muted); }
+  .wl-card__row { margin-top: 10px; display: flex; align-items: center; gap: 12px; }
+  .wl-card__price { font-weight: 800; font-size: 17px; }
+  .wl-card__row product-form-component { margin-left: auto; }
+  .wl-card__row form { margin: 0; }
+  .wl-card__row .product-form-text__error { display: block; font-size: 13px; color: var(--wl-kiss); }
+  .wl-card__row .product-form-text__error.hidden { display: none; }
+  @media (max-width: 480px) { .wl-card__ph img { height: 280px; } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "wetlipps · The shelf",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The shelf" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Every kiss," },
+    { "type": "text", "id": "heading_accent", "label": "Heading accent (kiss red)", "default": "covered." },
+    { "type": "textarea", "id": "intro", "label": "Intro line", "default": "For the daily kiss and the unhurried moment — because attraction and devotion belong to the same people." },
+    { "type": "text", "id": "button_label", "label": "Add button label", "default": "Add to cart" },
+    { "type": "range", "id": "padding-block-start", "label": "Top padding", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding-block-end", "label": "Bottom padding", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 }
+  ],
+  "presets": [{ "name": "wetlipps · The shelf", "category": "wetlipps" }]
+}
+{% endschema %}

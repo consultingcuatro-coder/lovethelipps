@@ -1,0 +1,51 @@
+{%- doc -%}
+  wetlipps header: wordmark, primary menu, cart pill. The pill toggles Horizon's cart drawer
+  (#cart-drawer) and carries .header-actions__cart-icon so the fly-to-cart animation lands on it.
+{%- enddoc -%}
+<div class="wl-header">
+  <div class="wl-wrap wl-nav">
+    <a class="wl-logo" href="{{ routes.root_url }}" aria-label="{{ 'accessibility.home_logo_alt' | t: store_name: shop.name }}">{{ shop.name | downcase }}</a>
+    <nav class="wl-links" aria-label="{{ 'accessibility.header_navigation_label' | t }}">
+      {%- for link in section.settings.menu.links -%}
+        <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+    {%- if settings.cart_type == 'drawer' and template.name != 'cart' -%}
+      <button type="button" class="wl-cart header-actions__cart-icon button-unstyled" on:click="#cart-drawer/toggle" aria-haspopup="dialog" aria-expanded="false" aria-controls="cart-drawer" aria-label="{{ 'accessibility.cart' | t }}">Cart &middot; <span data-wl-cart-count>{{ cart.item_count }}</span></button>
+    {%- else -%}
+      <a class="wl-cart header-actions__cart-icon" href="{{ routes.cart_url }}" aria-label="{{ 'accessibility.cart' | t }}">Cart &middot; <span data-wl-cart-count>{{ cart.item_count }}</span></a>
+    {%- endif -%}
+    <span class="visually-hidden" role="status" aria-live="polite" data-wl-cart-live></span>
+  </div>
+</div>
+<script type="module" src="{{ 'wl-cart-count.js' | asset_url }}"></script>
+
+{% stylesheet %}
+  body { --header-height: 76px; --header-group-height: var(--header-height); --transparent-header-offset-boolean: 0; }
+  .wl-header { background: var(--wl-cream); padding: 0 clamp(20px, 4vw, 52px); }
+  .wl-nav { display: flex; align-items: center; gap: 28px; padding: 20px 0; }
+  .wl-logo { font-family: 'Young Serif', Georgia, serif; font-size: 26px; color: var(--wl-kiss); text-decoration: none; text-decoration-color: transparent; }
+  .wl-links { display: flex; gap: 28px; align-items: center; }
+  .wl-links a { color: var(--wl-ink); text-decoration: none; text-decoration-color: transparent; font-weight: 600; font-size: 16px; }
+  .wl-links a:hover, .wl-links a[aria-current="page"] { color: var(--wl-kiss); }
+  .wl-cart { margin-left: auto; background: var(--wl-kiss); color: var(--wl-cream); padding: 9px 20px; border-radius: 999px; font-weight: 700; font-size: 15px; border: none; cursor: pointer; font-family: inherit; text-decoration: none; line-height: 1.4; display: inline-block; }
+  .wl-cart:hover { color: var(--wl-cream); background: #5e1a24; }
+  @media (max-width: 700px) {
+    .wl-nav { flex-wrap: wrap; gap: 10px 18px; }
+    .wl-links { gap: 18px; }
+    .wl-links a { font-size: 15px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "wetlipps header",
+  "tag": "header",
+  "class": "header-section",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" }
+  ],
+  "enabled_on": { "groups": ["header"] },
+  "presets": []
+}
+{% endschema %}

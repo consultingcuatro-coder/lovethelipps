@@ -1,0 +1,8 @@
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "wl_footer": { "type": "wl-footer", "settings": { "shelf_collection": "the-shelf" } }
+  },
+  "order": ["wl_footer"]
+}

@@ -1,0 +1,40 @@
+{%- doc -%}
+  Ingredient honesty card (water-blue) with ingredient chips.
+{%- enddoc -%}
+<div class="section-background"></div>
+<div class="section section--page-width spacing-style" style="{% render 'spacing-style', settings: section.settings %}">
+  <div class="wl-wrap">
+    <div class="wl-ing" id="ingredients">
+      <p class="wl-eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="wl-h2">{{ section.settings.heading }} <span class="wl-k">{{ section.settings.heading_accent }}</span></h2>
+      <p class="wl-ing__p">{{ section.settings.copy }}</p>
+      {%- assign chips = section.settings.chips | split: '|' -%}
+      <div class="wl-ing__chips">
+        {%- for chip in chips -%}<span>{{ chip | strip }}</span>{%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .wl-ing { background: var(--wl-water); border: 2px solid var(--wl-ink); border-radius: 22px; padding: clamp(26px, 4vw, 50px); scroll-margin-top: 24px; }
+  .wl-ing__p { max-width: 60ch; margin: 8px 0 0; font-size: 17.5px; }
+  .wl-ing__chips { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+  .wl-ing__chips span { background: var(--wl-paper); border: 1.5px solid rgba(36,27,24,.3); border-radius: 999px; padding: 9px 20px; font-size: 15px; font-weight: 700; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "wetlipps · Ingredient honesty",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Ingredient honesty" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Safe enough to eat." },
+    { "type": "text", "id": "heading_accent", "label": "Heading accent", "default": "Good enough to kiss." },
+    { "type": "textarea", "id": "copy", "label": "Paragraph", "default": "Every ingredient, on every tube, in plain type — because you technically eat your lip balm, and because “clean” should be a list you can read, not a badge we bought. If we wouldn’t put it in our kitchen, it doesn’t go on your lips." },
+    { "type": "text", "id": "chips", "label": "Chips (separate with |)", "default": "Candelilla wax | Cold-pressed coconut oil | Shea butter | Peppermint leaf | Zero parabens · zero PEGs · zero mystery" },
+    { "type": "range", "id": "padding-block-start", "label": "Top padding", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding-block-end", "label": "Bottom padding", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 }
+  ],
+  "presets": [{ "name": "wetlipps · Ingredient honesty", "category": "wetlipps" }]
+}
+{% endschema %}

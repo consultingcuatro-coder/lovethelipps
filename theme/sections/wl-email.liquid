@@ -1,0 +1,49 @@
+{%- doc -%}
+  Email capture (Shopify customer form, tagged newsletter).
+{%- enddoc -%}
+<div class="section-background"></div>
+<div class="section section--page-width spacing-style" style="{% render 'spacing-style', settings: section.settings %}">
+  <div class="wl-wrap">
+    <div class="wl-email">
+      <p class="wl-eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="wl-h2 wl-email__h2">{{ section.settings.heading }} <span class="wl-k">{{ section.settings.heading_accent }}</span></h2>
+      {%- form 'customer', class: 'wl-email__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        {%- if form.posted_successfully? -%}
+          <p class="wl-email__ok">{{ 'blocks.email_signup.success' | t }}</p>
+        {%- else -%}
+          <div class="wl-email__row">
+            <input type="email" name="contact[email]" id="wl-email-{{ section.id }}" placeholder="{{ 'blocks.email_signup.placeholder' | t }}" required autocomplete="email" aria-label="{{ 'blocks.email_signup.label' | t }}">
+            <button type="submit">{{ section.settings.button_label }}</button>
+          </div>
+          {%- if form.errors -%}<p class="wl-email__err">{{ form.errors | default_errors }}</p>{%- endif -%}
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .wl-email { text-align: center; background: var(--wl-water); border: 2px solid var(--wl-ink); border-radius: 22px; padding: clamp(28px, 4vw, 48px); }
+  .wl-email__h2 { font-size: clamp(24px, 3vw, 34px); }
+  .wl-email__form { margin-top: 18px; }
+  .wl-email__row { display: inline-flex; max-width: 100%; }
+  .wl-email__row input { padding: 13px 18px; border: 2px solid var(--wl-ink); border-radius: 999px 0 0 999px; font-size: 16px; width: min(320px, 60vw); background: #fff; color: var(--wl-ink); font-family: inherit; }
+  .wl-email__row button { padding: 13px 26px; border: 2px solid var(--wl-ink); border-left: none; border-radius: 0 999px 999px 0; background: var(--wl-kiss); color: var(--wl-cream); font-weight: 700; font-size: 16px; font-family: inherit; cursor: pointer; }
+  .wl-email__ok, .wl-email__err { margin: 12px 0 0; font-size: 16px; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "wetlipps · Email capture",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Stay kissable" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Get the good stuff" },
+    { "type": "text", "id": "heading_accent", "label": "Heading accent", "default": "(rarely, and worth it)" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Join" },
+    { "type": "range", "id": "padding-block-start", "label": "Top padding", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding-block-end", "label": "Bottom padding", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 36 }
+  ],
+  "presets": [{ "name": "wetlipps · Email capture", "category": "wetlipps" }]
+}
+{% endschema %}

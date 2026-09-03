@@ -1,0 +1,7 @@
+{
+  "sections": {
+    "main": { "type": "wl-main-product", "settings": { "pairs_collection": "the-shelf" } },
+    "fund": { "type": "wl-fund", "settings": { "padding-block-start": 64, "padding-block-end": 40 } }
+  },
+  "order": ["main", "fund"]
+}

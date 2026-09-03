@@ -1,0 +1,56 @@
+{%- doc -%}
+  wetlipps hero — "The Float": lips artwork masked into the cream page, lockup on the right.
+{%- enddoc -%}
+<div class="section-background"></div>
+<div class="section section--page-width spacing-style wl-hero-section" style="{% render 'spacing-style', settings: section.settings %}">
+  <div class="wl-wrap wl-hero">
+    <div class="wl-hero__art">
+      {%- if section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 1120 | image_tag: widths: '560, 1120', sizes: '(min-width: 861px) 50vw, 100vw', alt: section.settings.image.alt | default: 'Dewy pink lips with a clear drop of water falling — the wetlipps mark', loading: 'eager', fetchpriority: 'high' }}
+      {%- else -%}
+        <img src="{{ 'wl-hero.jpg' | asset_url }}" alt="Dewy pink lips with a clear drop of water falling — the wetlipps mark" width="844" height="804" fetchpriority="high">
+      {%- endif -%}
+    </div>
+    <div class="wl-hero__copy">
+      <h1 class="wl-h1 wl-hero__h1">{{ section.settings.heading }}</h1>
+      <p class="wl-hero__sub">{{ section.settings.sub }}</p>
+      <p class="wl-hero__p">{{ section.settings.copy }}</p>
+      <p class="wl-hero__ctas">
+        <a class="wl-cta" href="{{ section.settings.cta_link | default: '#shop' }}">{{ section.settings.cta_label }}</a>
+        {%- if section.settings.cta2_label != blank -%}<a class="wl-cta2" href="{{ section.settings.cta2_link | default: '/pages/story' }}">{{ section.settings.cta2_label }}</a>{%- endif -%}
+      </p>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .wl-hero { display: grid; grid-template-columns: 1.02fr .98fr; gap: clamp(28px, 5vw, 70px); align-items: center; padding: clamp(24px, 3.5vw, 54px) 0 clamp(18px, 2.5vw, 28px); }
+  .wl-hero__art img { width: 100%; max-width: 560px; height: auto; margin: 0 auto;
+    -webkit-mask-image: radial-gradient(ellipse 62% 62% at 50% 46%, #000 55%, transparent 78%);
+    mask-image: radial-gradient(ellipse 62% 62% at 50% 46%, #000 55%, transparent 78%); }
+  .wl-hero__h1 { font-size: clamp(40px, 5.6vw, 68px); color: var(--wl-kiss); }
+  .wl-hero__sub { margin: 8px 0 0; font-size: 15px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase; color: var(--wl-goldlight); }
+  .wl-hero__p { margin: 16px 0 0; font-size: 19px; max-width: 46ch; }
+  .wl-hero__ctas { margin: 24px 0 0; }
+  @media (min-width: 861px) { .wl-hero__art img { transform: translateY(-24px); } }
+  @media (max-width: 860px) { .wl-hero { grid-template-columns: 1fr; } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "wetlipps · Hero",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Hero artwork (optional — defaults to the lips mark)" },
+    { "type": "text", "id": "heading", "label": "Headline", "default": "Life’s better wet." },
+    { "type": "text", "id": "sub", "label": "Lockup line", "default": "Make restoration possible." },
+    { "type": "textarea", "id": "copy", "label": "Paragraph", "default": "Organic lip care from a family that knows chapped: Santa Barbara sun, beach days, trail days — and a long hunt for a balm that actually works. We found it, and put our name on it. Dewy, kissable, honest to the last ingredient." },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop the shelf — from $12" },
+    { "type": "url", "id": "cta_link", "label": "Button link" },
+    { "type": "text", "id": "cta2_label", "label": "Secondary link label", "default": "Our story" },
+    { "type": "url", "id": "cta2_link", "label": "Secondary link" },
+    { "type": "range", "id": "padding-block-start", "label": "Top padding", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-block-end", "label": "Bottom padding", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 }
+  ],
+  "presets": [{ "name": "wetlipps · Hero", "category": "wetlipps" }]
+}
+{% endschema %}

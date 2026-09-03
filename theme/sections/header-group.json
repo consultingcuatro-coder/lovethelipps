@@ -1,0 +1,8 @@
+{
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "wl_header": { "type": "wl-header", "settings": { "menu": "main-menu" } }
+  },
+  "order": ["wl_header"]
+}
