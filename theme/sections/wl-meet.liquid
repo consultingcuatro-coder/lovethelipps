@@ -4,7 +4,7 @@
 <div class="section-background"></div>
 <div class="section section--page-width spacing-style" style="{% render 'spacing-style', settings: section.settings %}">
   <div class="wl-wrap">
-    <div class="wl-band">
+    <div class="wl-band wl-meet-band">
       <div class="wl-band__img">
         {%- if section.settings.image != blank -%}
           {%- assign meet_alt = section.settings.image.alt | default: 'The two of us, golden hour' -%}
@@ -28,11 +28,7 @@
 </div>
 
 {% stylesheet %}
-  .wl-band { display: grid; grid-template-columns: 1fr 1.15fr; gap: clamp(28px, 5vw, 64px); align-items: center; background: var(--wl-paper); border: 2px solid var(--wl-ink); border-radius: 22px; padding: clamp(24px, 4vw, 50px); }
-  .wl-band__img img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 18px; display: block; }
-  .wl-band__chips { margin-top: 14px; }
-  .wl-band__sig { margin: 10px 0 0; font-family: 'Young Serif', Georgia, serif; font-size: 18px; color: var(--wl-kiss); }
-  @media (max-width: 860px) { .wl-band { grid-template-columns: 1fr; } }
+  .wl-meet-band { scroll-margin-top: 24px; }
 {% endstylesheet %}
 
 {% schema %}
