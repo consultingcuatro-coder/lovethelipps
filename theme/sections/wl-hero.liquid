@@ -6,10 +6,10 @@
   <div class="wl-wrap wl-hero" style="--wl-hero-shift: {{ section.settings.art_shift | default: 0 }}px">
     <div class="wl-hero__art">
       {%- if section.settings.image != blank -%}
-        {%- assign hero_alt = section.settings.image.alt | default: 'Dewy pink lips with a clear drop of water falling — the wetlipps mark' -%}
+        {%- assign hero_alt = section.settings.image.alt | default: 'Dewy pink lips with a clear drop of water falling — the lovethelipps mark' -%}
         {{ section.settings.image | image_url: width: 1120 | image_tag: widths: '560, 1120', sizes: '(min-width: 861px) 50vw, 100vw', alt: hero_alt, loading: 'eager', fetchpriority: 'high' }}
       {%- else -%}
-        <img src="{{ 'wl-hero.jpg' | asset_url }}" alt="Dewy pink lips with a clear drop of water falling — the wetlipps mark" width="844" height="804" fetchpriority="high">
+        <img src="{{ 'wl-hero.jpg' | asset_url }}" alt="Dewy pink lips with a clear drop of water falling — the lovethelipps mark" width="844" height="804" fetchpriority="high">
       {%- endif -%}
     </div>
     <div class="wl-hero__copy">
@@ -39,20 +39,20 @@
 
 {% schema %}
 {
-  "name": "wetlipps · Hero",
+  "name": "lovethelipps · Hero",
   "settings": [
     { "type": "image_picker", "id": "image", "label": "Hero artwork (optional — defaults to the lips mark)" },
     { "type": "range", "id": "art_shift", "label": "Artwork vertical nudge (desktop)", "min": -80, "max": 120, "step": 4, "unit": "px", "default": 40 },
-    { "type": "text", "id": "heading", "label": "Headline", "default": "Life’s better wet." },
+    { "type": "text", "id": "heading", "label": "Headline", "default": "Made for Lipps. All of them ;)" },
     { "type": "text", "id": "sub", "label": "Lockup line", "default": "Make restoration possible." },
     { "type": "textarea", "id": "copy", "label": "Paragraph", "default": "Organic lip care from a family that knows chapped: Santa Barbara sun, beach days, trail days — and a long hunt for a balm that actually works. We found it, and put our name on it. Dewy, kissable, honest to the last ingredient." },
-    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop the Gloss Wand — $16" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop Wetlipps — $16" },
     { "type": "url", "id": "cta_link", "label": "Button link" },
     { "type": "text", "id": "cta2_label", "label": "Secondary link label", "default": "Our story" },
     { "type": "url", "id": "cta2_link", "label": "Secondary link" },
     { "type": "range", "id": "padding-block-start", "label": "Top padding", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
     { "type": "range", "id": "padding-block-end", "label": "Bottom padding", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 }
   ],
-  "presets": [{ "name": "wetlipps · Hero", "category": "wetlipps" }]
+  "presets": [{ "name": "lovethelipps · Hero", "category": "lovethelipps" }]
 }
 {% endschema %}

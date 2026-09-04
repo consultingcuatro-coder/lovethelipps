@@ -3,8 +3,8 @@
   var KEY = 'wetlipps-cart';
   var P = {
     balm:  { name: 'The Balm Stick', price: 12, href: 'balm.html' },
-    gloss: { name: 'The Gloss Wand', price: 16, href: 'product.html' },
-    slip:  { name: 'sliplipps',      price: 25, href: 'sliplipps.html' }
+    gloss: { name: 'Wetlipps',       price: 16, href: 'wetlipps.html' },
+    slip:  { name: 'The intimate line', price: 25, href: 'intimate.html' }
   };
   var ORDER = ['balm', 'gloss', 'slip'];
 
