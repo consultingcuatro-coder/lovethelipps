@@ -1,4 +1,4 @@
-// wetlipps header cart count — listens to Horizon's standard cart event and keeps "Cart · N" current.
+// lovethelipps header cart count — listens to Horizon's standard cart event and keeps "Cart · N" current.
 import { StandardEvents } from '@shopify/events';
 
 const counters = () => document.querySelectorAll('[data-wl-cart-count]');
