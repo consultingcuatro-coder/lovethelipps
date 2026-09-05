@@ -25,9 +25,7 @@
   nav a{color:var(--ink);text-decoration:none;font-weight:600;font-size:16px}
   nav .cart{margin-left:auto;background:var(--kiss);color:var(--cream);padding:9px 20px;border-radius:999px;font-weight:700;font-size:15px;border:none;font-family:inherit;cursor:pointer}
   .hero{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(28px,5vw,70px);align-items:center;padding:clamp(24px,3.5vw,54px) 0 clamp(30px,4vw,54px)}
-  .hero img{width:100%;max-width:560px;
-    -webkit-mask-image:radial-gradient(ellipse 62% 62% at 50% 46%, #000 55%, transparent 78%);
-    mask-image:radial-gradient(ellipse 62% 62% at 50% 46%, #000 55%, transparent 78%)}
+  .hero img{width:100%;height:auto;max-width:600px;display:block;margin:0 auto}
   .hero h1{font-size:clamp(32px,4.3vw,54px);line-height:1.08;color:var(--kiss);text-wrap:balance}
   .sub{margin-top:12px;font-size:13px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--goldlight)}
   .copy{margin-top:14px;font-size:18px;max-width:46ch}
@@ -97,7 +95,7 @@
   footer .legal{margin-top:30px;font-size:13.5px;color:#8d8478}
   footer .legal a{display:inline;font-size:inherit;margin:0;color:#b9ae9f}
   footer .fine{margin-top:8px;font-size:13.5px;color:#8d8478}
-  @media (min-width:861px){.hero img{transform:translateY(40px)}}
+  
   @media (max-width:860px){.hero,.band,.duo{grid-template-columns:1fr}}
 
   /*FOOTER-CSS*/
@@ -138,7 +136,7 @@
 
 <!-- 1 · ATTENTION -->
 <header class="hero">
-  <img src="img/hero-illustrated.jpg" alt="Glossy lips with a clear drop — the LoveTheLipps mark" width="1000" height="1000">
+  <img src="img/hero-illustrated.jpg" alt="Glossy lips with a clear drop — the LoveTheLipps mark" width="1040" height="1040">
   <div>
     <h1>Made for Lipps.<br>All of them&nbsp;;)</h1>
     <p class="sub">Make restoration possible.</p>
